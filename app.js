@@ -1,12 +1,18 @@
 
 
-$(function(){
-    addButton(topicArray);
-});
-
-
 
 var topicArray = ["Football", "Baseball", "Basketball", "Golf", "Hockey"];
+var fixed = "";
+var animated = "";
+
+
+$(document).ready(function(){
+
+
+  addButton(topicArray);
+
+});
+
 
 function addButton(){
 
@@ -50,15 +56,23 @@ $(document).on("click", ".newButton", function() {
 
           var p = $("<p>").text("Rating: " + rating);
 
-          var topicImage = $("<img>");
-          topicImage.attr("src", results[i].images.fixed_height.url);
+          var still = results[i].images.fixed_height_still.url;
+          var animated = results[i].images.fixed_height.url;
 
+          var topicImage = $("<img class='gifImage'>");
+          topicImage.attr("src", still);
+          topicImage.attr('data-still', still)
+          topicImage.attr('data-animated', animated)
+          
           gifDiv.prepend(p);
           gifDiv.prepend(topicImage);
 
           $("#addGif").prepend(gifDiv);
+
+
         }
       });
+
   });
 
   $('.newSearch').on("click",function(){
@@ -69,7 +83,39 @@ $(document).on("click", ".newButton", function() {
     topicArray.push(addSearch);
     addButton(topicArray);
 
-    return false;
+    event.preventDefault();
 
 
   });
+
+
+
+
+  $(document).on("click", ".gifImage", function(event){
+    console.log("image clicked")
+
+    var imgSrc = event.target.src
+ 
+
+  if (imgSrc.includes("_s.gif")) {
+    $(this).attr('src', $(this).data('animated'));
+
+  }else {
+
+    $(this).attr('src', $(this).data('still'));
+
+  }
+
+  });
+
+
+
+
+
+
+
+  //   // create variables to set new url values
+  //   // compare still vs. active images on click
+  //   // includes() function
+  //   // If/else fuction to change default to still on click, else keep the same
+
